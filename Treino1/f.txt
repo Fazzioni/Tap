@@ -1,0 +1,42 @@
+ 
+
+// partidas
+//  --> 1 partida tem 3 jogos
+//  --> quem vencer 2x primeiro ganha
+
+// Jogos
+//  --> esquerda começa no primeiro jogo, inicia o ultimo ganhador
+//  --> 
+
+//Players are identified by their relative positions on the score (left and right player);
+
+
+
+
+// -> "S" -> ponto servidor
+// -> "R" -> ponto receptor
+// Q -> imprime pontuação
+
+
+
+
+ // left = 0, right = 1  |----> Index of point player
+            
+    // inicia com server = 0 = left
+    // -->ultimo a marcar o ponto
+    // -->ulitmo a ganhar o game
+    
+
+
+
+    return pl+" ("+  point_players[0]   +string(&star[0])+") - "+string(&pr)+" ("+point_players[1]+string(&star[1])+")\n";
+            } else {
+                string winner[2] = {""};
+                winner[won] = " (winner)";
+                return pl+string(&winner[0])+" - "+pr+winner[1]+"\n";
+
+
+                tmp += pl + " (" +  point_players[0] + star[0];
+                tmp += ") - " + pr + point_players[1]+ star[1];
+                tmp += ")\n";
+                

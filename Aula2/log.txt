@@ -1,0 +1,11 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+
+// 
+ios_base::sync_with_stdio(false)
+
+cin.tie(NULL) // clear std::cout -- Apaga todos os dados restantes de cin e imprime cout
+
+
+
