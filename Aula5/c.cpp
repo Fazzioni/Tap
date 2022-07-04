@@ -5,11 +5,15 @@ using namespace std;
 vector<int> els[100000+10];
 
 
-int cbfs[100000+10];
-char cdfs[100000+10];
+int cbfs[100000+10]; // cor do bfs
+//char cdfs[100000+10]; 
+int dbfs[100000+10]; // distancia anterior de cada no
+
+queue<int> fila;
+int last_node = -1;
 
 int m = 0;
-
+/*
 void dfs(pair<int,int> v){
     if (cdfs[v.first] == 1)
         return;
@@ -21,8 +25,26 @@ void dfs(pair<int,int> v){
 
     for (int a : els[v.first])
         dfs({a,v.second + 1});
-}
+}*/
 
+
+void SolveNode(int x ){
+    cout<<"Solve["<<x<<"]\n";
+
+    cbfs[x]++; // "cor": qtd de vezes que entrou na fila
+
+    if (els[x].size() -1 == cbfs[x]){  // se tiver so 1 conexao
+
+        for (int i : els[x])
+            if (els[i].size() -1 > cbfs[i]){
+                fila.push(i);
+                dbfs[i] = max(dbfs[i], dbfs[x]+1);
+                cout<<"     push("<<i<<")\n";
+            }
+    }else cout<<"       reject: "<< x<<"  ("<<cbfs[x]<<"/"<<els[x].size()<<")\n";                
+
+    last_node = x;
+};
 
 int main(){
     ios::sync_with_stdio(false); cin.tie(0);
@@ -32,51 +54,39 @@ int main(){
         
         // load
         for (int i = 0; i < n-1; i ++){
-            cbfs[i] = 0;
-            cdfs[i] = 0;
-
             int a,b; cin >> a >> b;
             els[a].push_back(b);
             els[b].push_back(a);
+
+            cbfs[i] = 0;
+            dbfs[i] = 0;
+//          cdfs[i] = 0;
         }
+
 
         // achar o centro - busca em largura
-        queue<int> fila;
-        for (int i = 0; i < n; i ++){
+        for (int i = 0; i < n; i ++)
             if (els[i].size() == 1){ // coloca na fila se: conexao == 1
                 fila.push(i);
-                cbfs[i]--;
-                //cout<<"\ninsert: "<<i;
+                cbfs[i] = -1;
             }
-        }
 
-        int last = -1;
 
+        last_node = -1;
         while (!fila.empty()){
             int x = fila.front();
             fila.pop();
-            
-            cbfs[x]++;
-            // solve node
-                if (els[x].size() -1 == cbfs[x]){ 
-                   
-                    for (int i : els[x])
-                        if (els[i].size() -1 > cbfs[i]){
-                            fila.push(i);
-                            //cout<<"    add fila    "<<i;
-                    }
+            SolveNode(x);
+        } 
+        
+        cout<<"center node "<<last_node<<"\n";
+        cout<<"distance:  "<<dbfs[last_node]<<"\n";
 
-                }//else cout<<"  reject: "<< x<<"  ("<<cbfs[x]<<"/"<<els[x].size()<<")";                
-
-            last = x;      
-        } // while
-        //cout<<"center node "<<last<<"\n";
+        //cout<<"\n";
 
         // busca em profundidade
         m = 0;
-        dfs({last,0});
-        cout<<m<<"\n";
-
+        //dfs({last,0}); cout<<m<<"\n";
 
         // limpar a lista
         for (int i = 0; i < n; i ++)
