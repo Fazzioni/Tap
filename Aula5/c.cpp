@@ -68,9 +68,8 @@ int main(){
                         cbfs[i]++;
                         if (els[i].size() -1 == cbfs[i])
                             fila.push(i);
-
-                        
                     }
+                    
                     last = x; 
                 
                
