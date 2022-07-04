@@ -36,4 +36,17 @@ int main(){
 // como fazer um algoritmo para suportar?
 
 
+//Se tiver Sn = Sn+1, deveria parar? sim pq a resposta do anterior é igual
+
+ 01011 =>  (1 -> 0 -> 1)
+101011 => (0 -> 1 ->)
+
+e se for de 2 em 2?
+
+01 10 01 10 01 01 <- movimento igual ao anterior
+ 1  0  1  0  1  1 
+   0     0     
+
+0110 -> 1,0,0(110) -> 0
+
 */

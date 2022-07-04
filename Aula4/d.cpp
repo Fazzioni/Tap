@@ -9,52 +9,40 @@ int answer;
 
 class Tnode{ 
     public:
-        int y, x, c, d, h;
+        int y, x, c;
+        bool IsEnd;
         Tnode(int _y,int _x,int _cp){
             y = _y, x = _x, c = _cp+m[y][x];
-            d = Distance(y,x);
-            if (x == y) d = d / 2;
-            h = c + d;
+            IsEnd = 
         };
-        bool operator<(const Tnode &node)const{ return (h > node.h); };
-        bool operator>(const Tnode &node)const{ return (h < node.h); };
-        bool operator==(const Tnode &node)const{ return (h == node.h);};
+     //   bool operator<(const Tnode &node)const{ return (h > node.h); };
+     //   bool operator>(const Tnode &node)const{ return (h < node.h); };
+     //   bool operator==(const Tnode &node)const{ return (h == node.h);};
 };
-
-Tnode a = Tnode(0,0,0);
+  
  
-priority_queue<Tnode> pk;
+queue<Tnode> fila;
 
 pair<int, int> moves[3] = {{1,1},{0,1},{1,0}};
 
-void solve(Tnode node){
-    
+void solve(Tnode node){    
     for (auto move : moves){
         Tnode tmp = Tnode(node.y+move.first,node.x+move.second, node.c);
 
             if (m[tmp.y][tmp.x] != deslocamento)
                 if (tmp.c <= K){ // custo menor ou igual do que max bebida
                     if (tmp.d == 0){ // distancia até o ultimo ponto
-                        //cout<<"S: ("<<tmp.y<<"."<<tmp.x<<"): "<<tmp.c<<"\n";
-                        if ((answer == -1) || (answer > tmp.c))
+                        if ( tmp.c >  answer)
                             answer = tmp.c;          
-                        //break;
-                    }else{
-                        pk.push(tmp);
-                        //cout<<node.y<<"."<<node.x<<": "<<node.c<<"\n";
-                        
-                    }
-                    //cout<<"("<<node.y<<","<<node.x<<",   "<<node.c<<") ==> ("<<tmp.y<<","<<tmp.x<<",   "<<tmp.c<<")\n";
+                    }else
+                        fila.push(tmp);
                 }
-
-    }//
-
-    //cout<<"\n";
+    }
 }
 
 int main(){ // busca A*
     ios::sync_with_stdio(false); cin.tie(0);
-    int T ;
+    int T;
 
     cin>>T;
     while(T--){
@@ -70,10 +58,10 @@ int main(){ // busca A*
                 cin>>m[y][x];
                 
         answer = -1;
-        pk.push( Tnode(1,1,0));    
-        while (!pk.empty()){
-            auto node = pk.top();
-            pk.pop();
+        fila.push( Tnode(1,1,0));    
+        while (!fila.empty()){
+            auto node = fila.Front();
+            fila.pop();
             solve(node);
         }   
         cout<<answer<<'\n';

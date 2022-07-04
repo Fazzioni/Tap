@@ -5,7 +5,6 @@ using namespace std;
 #define caminho '.'
 
 char m[102][102];
-int  r[102][102];
 
 int y_max,x_max;
 
@@ -14,18 +13,6 @@ void print(){
     for (int y= 0; y < y_max+2; y++){ 
         for (int x =0; x < x_max+2; x++) 
             cout<<m[y][x]<<" "; 
-        cout<<"\n"; 
-        }
-}
-void printR(){
-    cout<<'\n';
-    for (int y= 1; y <= y_max; y++){ 
-        for (int x =1; x <= x_max; x++)
-            if (r[y][x] == -1)
-                cout<<"  ";
-            else
-                cout<<r[y][x]<<" "; 
-        
         cout<<"\n"; 
         }
 }
@@ -38,17 +25,23 @@ int max_custo;
 pair<int,int> moves[8] = {{1,1},{1,-1},{-1,-1},{-1,1},{1,0},{0,1},{-1,0},{0,-1}};
     
 void solveNode(TNode node){
-    if (m[node.y][node.x] == blocked) 
-        return;
+    if (m[node.y][node.x] != blocked){
+        
 
-    m[node.y][node.x] = blocked;
-    r[node.y][node.x] = node.custo;
+        m[node.y][node.x] = blocked;
 
-    if (node.custo > max_custo)
-        max_custo = node.custo;
+        if (node.custo > max_custo)
+            max_custo = node.custo;
 
-    for (auto move : moves)
-        fila.push({node.y + move.first,node.x + move.second, node.custo+1});
+        for (auto move : moves){
+            TNode nodemove = TNode();
+            nodemove.y = node.y + move.first;
+            nodemove.x = node.x + move.second;
+            nodemove.custo = node.custo+1;
+            fila.push( nodemove);
+        }
+    }
+
 }
 
 int main(){
@@ -58,24 +51,25 @@ int main(){
         max_custo = 0;
         cin>>y_max>>x_max;
         // deslocamento
-        for (int x = 0; x <= x_max+1; x++) m[0][x]=blocked, m[y_max+1][x]=blocked;
-        for (int y = 0; y <= y_max+1; y++) m[y][0]=blocked, m[y][x_max+1]=blocked;
-     
+        for (int x = 0; x <= x_max+1; x++){ m[0][x]=blocked; m[y_max+1][x]=blocked;}
+        for (int y = 0; y <= y_max+1; y++){ m[y][0]=blocked; m[y][x_max+1]=blocked;}
+
         // load map
         for (int y = 1; y <= y_max; y++)
-            for (int x = 1; x <= x_max; x++){
+            for (int x = 1; x <= x_max; x++)
                 cin>>m[y][x];
-                r[y][x] = -1;
-            }
-       
-        fila.push({1,1,0});
+
+        TNode node = TNode();
+        node.y = 1;
+        node.x = 1;
+        node.custo = 0;
+
+        fila.push(node);
         while (!fila.empty()){
             TNode node = fila.front();
             fila.pop();
             solveNode(node);
         }
-        printR();
-        
         cout<<max_custo<<'\n'; 
     }
 }
